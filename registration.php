@@ -4,7 +4,7 @@ include("dbconnection.php");
 <?php
 if(isset($_REQUEST['sub']))
 {
-if(($_REQUEST['name']=="")||($_REQUEST['phone']=="")||($_REQUEST['email']=="")||($_REQUEST['pass']=="")||($_REQUEST['conpass']=="")||empty($_FILES['image']))
+if(($_REQUEST['name']=="")||($_REQUEST['phone']=="")||($_REQUEST['email']=="")||($_REQUEST['pass']=="")||($_REQUEST['conpass']=="")||empty($_FILES['image'])||empty($_FILES['syllabus'])||empty($_FILES['resume'])||empty($_FILES['schedule']))
 {
 $msg='<div class="alert alert-warning text-center mt-5">Fill All The Fields</div>';   
 }
@@ -16,6 +16,9 @@ $email=$_REQUEST['email'];
 $pass=$_REQUEST['pass'];
 $conpass=$_REQUEST['conpass'];
 $image=$_FILES['image'];
+$syllabus=$_FILES['syllabus'];
+$resume=$_FILES['resume'];  
+$schedule=$_FILES['schedule'];    
 $sql="SELECT email FROM registration WHERE email='".$email."'";
 $result=mysqli_query($conn,$sql);
 if(mysqli_num_rows($result)==1)
@@ -28,7 +31,7 @@ if(strlen($phone)==10)
 {
 if(strlen($pass)<8 && strlen($conpass)<8)
 {
-$msg='<div class="alert alert-warning text-center mt-5">Password Must Be 8 Character Long</div>';    
+$msg='<div class="alert alert-warning text-center mt-5">The Password Must Be At Least 8 Characters Long</div>';    
 }
 else
 {    
@@ -37,8 +40,8 @@ if($pass==$conpass)
 $iname=$_FILES['image']['name'];
 $tmp_name=$_FILES['image']['tmp_name'];
 $u_img=uniqid().$iname;
-move_uploaded_file($tmp_name,"userid/".$u_img);
-$sql="INSERT INTO registration(name,phone,email,pass,conpass,image)VALUES('$name','$phone','$email','$pass','$conpass','$u_img')";
+move_uploaded_file($tmp_name,"userid/".$u_img);     
+$sql="INSERT INTO registration(name,phone,email,pass,conpass,image,syllabus,resume,schedule)VALUES('$name','$phone','$email','$pass','$conpass','$u_img','$syllabus','$resume','$schedule')";
 if(mysqli_query($conn,$sql))
 {
 $msg='<div class="alert alert-success text-center mt-5">Registered</div>';
@@ -50,7 +53,7 @@ $msg='<div class="alert alert-warning text-center mt-5">Something Went Wrong</di
 }
 else
 {
-$msg='<div class="alert alert-warning text-center mt-5">Password And Confirm Pasword Must Be Same</div>';
+$msg='<div class="alert alert-warning text-center mt-5">Password And Confirm Password Must Be Same</div>';
 }
 }
 }
@@ -137,16 +140,36 @@ height:100vh;
 </div>
 </div>    
 </div>
-<div class="row">
-<div class="offset-sm-4">
+<div class="row mt-2">
+<div class="col-sm-4">
 <div class="form-group">
 <h5 class="text-white"><lable for="Profie_Photo">Profile_Photo</lable></h5>
 <input type="file" required name="image" class="text-info">    
 </div>    
-</div>   
+</div>
+<div class="col-sm-4">
+<div class="form-group">
+<h5 class="text-white"><lable for="Syllabus">Syllabus</lable></h5>
+<input type="file" required name="syllabus" class="text-info">    
+</div>    
+</div> 
+<div class="col-sm-4">
+<div class="form-group">
+<h5 class="text-white"><lable for="Resume">Resume</lable></h5>
+<input type="file" required name="resume" class="text-info">    
+</div>    
+</div>    
+</div>
+<div class="row mt-2">
+<div class="col-sm-4 offset-sm-4">
+<div class="form-group">
+<h5 class="text-white"><lable for="Schedule">Schedule</lable></h5>
+<input type="file" required name="schedule" class="text-info">    
+</div>    
+</div>
 </div>
 <div class="row mt-5">
-<div class="col-sm-7 offset-sm-2">
+<div class="col-sm-7 offset-sm-3">
 <input type="submit" value="Registration" name="sub" class="text-white btn btn-dark" style="border-color: firebrick; border-bottom-width: thick;">
 <a href="login.php"  class="text-white btn btn-dark ml-5" style="border-color: firebrick; border-bottom-width: thick;">login</a>
 <a href="registration.php"  class="text-white btn btn-dark ml-5" style="border-color: firebrick; border-bottom-width: thick;">Refesh</a>     
@@ -165,8 +188,5 @@ echo $msg;
 <!-- Optional JavaScript; choose one of the two! -->
 <!-- Option 1: Bootstrap Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-<!-- Option 2: Separate Popper and Bootstrap JS -->
-<!--<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>-->
 </body>
 </html>
